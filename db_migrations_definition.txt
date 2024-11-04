@@ -1,0 +1,57 @@
+CREATE TABLE admins (
+    `ID` INT AUTO_INCREMENT,
+    `Username` VARCHAR(50) NOT NULL,
+    `Password` VARCHAR(50) NOT NULL,
+	`Email` VARCHAR(50) DEFAULT NULL,
+	`Name` VARCHAR(50) DEFAULT NULL,
+    `LastName` VARCHAR(50) DEFAULT NULL,
+    PRIMARY KEY (`ID`),
+    UNIQUE KEY `uk_username` (`Username`)
+);
+
+CREATE TABLE employees (
+    `ID` INT AUTO_INCREMENT,
+    `Username` VARCHAR(50) NOT NULL,
+    `Password` VARCHAR(50) NOT NULL,
+    `Email` VARCHAR(50) DEFAULT NULL,
+    `Name` VARCHAR(50) DEFAULT NULL,
+    `LastName` VARCHAR(50) DEFAULT NULL,
+    `StartDate` DATE DEFAULT NULL,
+    `Sector` VARCHAR(50) NOT NULL,
+    PRIMARY KEY (`ID`),
+    UNIQUE KEY `uk_username` (`Username`)
+);
+
+CREATE TABLE customers (
+    `ID` INT AUTO_INCREMENT,
+    `Username` VARCHAR(50) NOT NULL,
+    `Password` VARCHAR(50) NOT NULL,
+    `Email` VARCHAR(50) DEFAULT NULL,
+    `Name` VARCHAR(50) DEFAULT NULL,
+    `LastName` VARCHAR(50) DEFAULT NULL,
+    `DateOfBirth` DATE DEFAULT NULL,
+    `Address` VARCHAR(100) DEFAULT NULL,
+    `IsTest` TINYINT DEFAULT 0,
+    PRIMARY KEY (`ID`),
+    UNIQUE KEY `uk_username` (`Username`)
+);
+
+CREATE TABLE items (
+    `ID` INT AUTO_INCREMENT,
+    `Name` VARCHAR(50) NOT NULL,
+    `Description` TEXT NOT NULL,
+	`Price` DECIMAL(10, 2) NOT NULL,
+	`Quantity` INT NOT NULL,
+    PRIMARY KEY (`ID`),
+    UNIQUE KEY `uk_name` (`Name`)
+);
+
+CREATE TABLE orders (
+    `ID` INT AUTO_INCREMENT,
+    `CustomerId` INT NOT NULL,
+    `ItemId` INT NOT NULL,
+	`Status` VARCHAR(50) NOT NULL,
+    `Price` DECIMAL(10, 2) NOT NULL,
+    `OrderDate` DATE NOT NULL,
+    PRIMARY KEY (`ID`)
+);

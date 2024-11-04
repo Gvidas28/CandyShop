@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CandyShop.Mobile.Views.EditCommentPage"
+             Title="{Binding Title}"
+             BackgroundColor="LightGoldenrodYellow">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Delete" Command="{Binding DeleteCommentCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <StackLayout Spacing="20" Padding="15">
+        <Entry x:Name="txtUsername" TextColor="Black" PlaceholderColor="Gray" Text="{Binding Text}"></Entry>
+        <Button 
+                Command="{Binding UpdateCommentCommand}"
+                VerticalOptions="Center"
+                Text="Update Comment"
+                TextColor="DarkViolet"
+                BackgroundColor="Transparent"
+                BorderColor="DarkViolet"
+                BorderWidth="1.5"
+                CornerRadius="50"
+                ></Button>
+    </StackLayout>
+
+</ContentPage>

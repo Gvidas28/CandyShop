@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CandyShop.Mobile.Views.ItemDetailPage"
+             Title="{Binding Title}"
+             BackgroundColor="LightGoldenrodYellow">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="View Comments" Command="{Binding ViewCommentsCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <StackLayout Spacing="20" Padding="15">
+        <Image Source="{Binding Image}" HeightRequest="300" WidthRequest="300"/>
+        <Label Text="Name:" FontSize="Medium" />
+        <Label Text="{Binding Text}" FontSize="Small"/>
+        <Label Text="Description:" FontSize="Medium" />
+        <Label Text="{Binding Description}" FontSize="Small"/>
+        <Label Text="Price:" FontSize="Medium" />
+        <Label Text="{Binding Price, StringFormat='{}{0}$'}" FontSize="Small"/>
+        <Label Text="Quantity:" FontSize="Medium" />
+        <Label Text="{Binding Quantity}" FontSize="Small"/>
+    </StackLayout>
+    
+</ContentPage>

@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<LangVersion>latest</LangVersion>
+		<UseWindowsForms>true</UseWindowsForms>
+		<ImplicitUsings>disable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CandyShop.Model\CandyShop.Model.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="OrderUpdatePage.cs">
+	    <SubType>Form</SubType>
+	  </Compile>
+	  <Compile Update="OrderAddPage.cs">
+	    <SubType>Form</SubType>
+	  </Compile>
+	  <Compile Update="ItemUpdatePage.cs">
+	    <SubType>Form</SubType>
+	  </Compile>
+	  <Compile Update="ItemAddPage.cs">
+	    <SubType>Form</SubType>
+	  </Compile>
+	  <Compile Update="EmployeeUpdatePage.cs">
+	    <SubType>Form</SubType>
+	  </Compile>
+	  <Compile Update="EmployeeAddPage.cs">
+	    <SubType>Form</SubType>
+	  </Compile>
+	  <Compile Update="CustomerUpdatePage.cs">
+	    <SubType>Form</SubType>
+	  </Compile>
+	  <Compile Update="CustomerAddPage.cs">
+	    <SubType>Form</SubType>
+	  </Compile>
+	  <Compile Update="AdminUpdatePage.cs">
+	    <SubType>Form</SubType>
+	  </Compile>
+	  <Compile Update="Properties\Resources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Resources.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Properties\Resources.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+</Project>

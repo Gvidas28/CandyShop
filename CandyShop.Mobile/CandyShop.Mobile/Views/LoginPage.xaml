@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="CandyShop.Mobile.Views.LoginPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="LightGoldenrodYellow">
+    <ContentPage.Content>
+        <StackLayout Padding="40" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+            <Image Source="candyshoplogo.png"></Image>
+            <Label Text="Candy Shop" HorizontalOptions="Center" FontSize="50" TextColor="DarkViolet"></Label>
+            <Entry x:Name="txtUsername" Placeholder="Username" TextColor="Black" PlaceholderColor="Gray" Text="{Binding Username}"></Entry>
+            <Entry x:Name="txtPassword" Placeholder="Password" IsPassword="True" TextColor="Black" PlaceholderColor="Gray" Text="{Binding Password}"></Entry>
+            <Button 
+                Command="{Binding LoginCommand}"
+                VerticalOptions="Center"
+                Text="Login"
+                TextColor="DarkViolet"
+                BackgroundColor="Transparent"
+                BorderColor="DarkViolet"
+                BorderWidth="1.5"
+                CornerRadius="50"
+                ></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
