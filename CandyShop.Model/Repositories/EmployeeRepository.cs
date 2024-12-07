@@ -14,6 +14,7 @@ namespace CandyShop.Model.Repositories
                 FROM `employees`
                 WHERE `Username` = ?username";
 
+            //seems to be repeated everywhere,
             var connection = new MySqlConnection(Constants.CONNECTION_STRING);
             var command = new MySqlCommand(query, connection);
 
@@ -25,11 +26,15 @@ namespace CandyShop.Model.Repositories
             if (!result.Read())
                 return null;
 
+            //employee construction from dbResult could be extracted all together
+            //single responsibility, modular, easier to test, decouple
             var employee = new Employee()
             {
+                //magic numbers: should use constants, or enum, like Employee.idColumn
                 ID = int.Parse(result.GetString(0)),
                 Username = result.GetString(1),
                 Password = result.GetString(2),
+                //checking null could be extracted, DRY
                 Email = !result.IsDBNull(3) ? result.GetString(3) : null,
                 Name = !result.IsDBNull(4) ? result.GetString(4) : null,
                 LastName = !result.IsDBNull(5) ? result.GetString(5) : null,
@@ -37,6 +42,7 @@ namespace CandyShop.Model.Repositories
                 Sector = result.GetString(7)
             };
 
+            //shouldn't we try catch finally to ensure connection is closed?
             connection.Close();
 
             return employee;
@@ -104,11 +110,13 @@ namespace CandyShop.Model.Repositories
 
         public void UpdateEmployee(Employee employee)
         {
+            //should extract string interpolation result to variable, improves code readability, cognitive complexity
             var query = @$"
                 UPDATE `employees`
                 SET {(!string.IsNullOrWhiteSpace(employee.Password) ? "`Password` = ?password," : string.Empty)} `Username` = ?username, `Email` = ?email, `Name` = ?name, `LastName` = ?lastName, `StartDate` = ?startDate, `Sector` = ?sector
                 WHERE `ID` = ?id";
 
+            //again DRY
             var connection = new MySqlConnection(Constants.CONNECTION_STRING);
             var command = new MySqlCommand(query, connection);
 

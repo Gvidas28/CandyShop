@@ -9,11 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CandyShop.Model", "CandySho
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CandyShop.API", "CandyShop.API\CandyShop.API.csproj", "{226BB1BC-2261-4BE6-A773-C7AA44D2F461}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CandyShop.Mobile.Android", "CandyShop.Mobile\CandyShop.Mobile.Android\CandyShop.Mobile.Android.csproj", "{37977394-97F3-44A1-949D-51596D6BC666}"
+#Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CandyShop.Mobile.Android", "CandyShop.Mobile\CandyShop.Mobile.Android\CandyShop.Mobile.Android.csproj", "{37977394-97F3-44A1-949D-51596D6BC666}"
+#EndProject
+#Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CandyShop.Mobile.iOS", "CandyShop.Mobile\CandyShop.Mobile.iOS\CandyShop.Mobile.iOS.csproj", "{A0ED190D-323A-41EC-A601-31617F1A28B5}"
+#EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CandyShop.Mobile", "CandyShop.Mobile\CandyShop.Mobile\CandyShop.Mobile.csproj", "{B390D3CF-D78C-46A1-9E92-10298F7CF1F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CandyShop.Mobile.iOS", "CandyShop.Mobile\CandyShop.Mobile.iOS\CandyShop.Mobile.iOS.csproj", "{A0ED190D-323A-41EC-A601-31617F1A28B5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CandyShop.Mobile", "CandyShop.Mobile\CandyShop.Mobile\CandyShop.Mobile.csproj", "{B390D3CF-D78C-46A1-9E92-10298F7CF1F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CandyShop.Model.Test", "CandyShop.Model.Test\CandyShop.Model.Test.csproj", "{0863004A-25D4-4B4F-8764-291C61AA9335}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,6 +105,18 @@ Global
 		{B390D3CF-D78C-46A1-9E92-10298F7CF1F9}.Release|iPhone.Build.0 = Release|Any CPU
 		{B390D3CF-D78C-46A1-9E92-10298F7CF1F9}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{B390D3CF-D78C-46A1-9E92-10298F7CF1F9}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{0863004A-25D4-4B4F-8764-291C61AA9335}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0863004A-25D4-4B4F-8764-291C61AA9335}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0863004A-25D4-4B4F-8764-291C61AA9335}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{0863004A-25D4-4B4F-8764-291C61AA9335}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{0863004A-25D4-4B4F-8764-291C61AA9335}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{0863004A-25D4-4B4F-8764-291C61AA9335}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{0863004A-25D4-4B4F-8764-291C61AA9335}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0863004A-25D4-4B4F-8764-291C61AA9335}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0863004A-25D4-4B4F-8764-291C61AA9335}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{0863004A-25D4-4B4F-8764-291C61AA9335}.Release|iPhone.Build.0 = Release|Any CPU
+		{0863004A-25D4-4B4F-8764-291C61AA9335}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{0863004A-25D4-4B4F-8764-291C61AA9335}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
