@@ -157,5 +157,119 @@ namespace CandyShop.Model.Test
 
             mySql.Verify(_ => _.ExecuteNonQuery(expectedQuery, expectedParams));
         }
+
+        [Fact]
+        public void UpdateEmployeeWithPassword()
+        {
+            var mySql = new Mock<ISqlExecutor>();
+
+            var someUsername = "aUsername";
+
+            var expectedQuery = @$"
+                UPDATE `employees`
+                SET `Password` = ?password, `Username` = ?username, `Email` = ?email, `Name` = ?name, `LastName` = ?lastName, `StartDate` = ?startDate, `Sector` = ?sector
+                WHERE `ID` = ?id";
+
+            var someId = "2";
+
+            var someEmail = "aEmail";
+
+            var someName = "aName";
+
+            var somePassword = "aPassword";
+
+            var someLastName = "aLastName";
+
+            var someStartDate = "2021-02-03";
+
+            var someSector = "aSector";
+
+            var anEmployee = new Employee()
+            {
+                ID = int.Parse(someId),
+                Username = someUsername,
+                Password = somePassword,
+                Email = someEmail,
+                Name = someName,
+                LastName = someLastName,
+                StartDate = DateTime.Parse(someStartDate),
+                Sector = someSector
+            };
+
+            var expectedParams = new Dictionary<string, object> {
+                {"?id", anEmployee.ID},
+                {"?username", anEmployee.Username},
+                {"?email",  anEmployee.Email},
+                {"?name",  anEmployee.Name},
+                {"?lastName",  anEmployee.LastName},
+                {"?startDate",  anEmployee.StartDate},
+                {"?sector", anEmployee.Sector},
+                {"?password", anEmployee.Password},
+            };
+
+            mySql.Setup(_ => _.ExecuteNonQuery(expectedQuery, expectedParams)).Returns(1);
+
+            var employeeRepo = new EmployeeRepository(mySql.Object);
+
+            anEmployee.Invoking(emp => employeeRepo.UpdateEmployee(emp)).Should().NotThrow();
+
+            mySql.Verify(_ => _.ExecuteNonQuery(expectedQuery, expectedParams));
+        }
+
+        [Fact]
+        public void UpdateEmployeeThrowIfCommandDoesNotSucceed()
+        {
+            var mySql = new Mock<ISqlExecutor>();
+
+            var someUsername = "aUsername";
+
+            var expectedQuery = @$"
+                UPDATE `employees`
+                SET `Password` = ?password, `Username` = ?username, `Email` = ?email, `Name` = ?name, `LastName` = ?lastName, `StartDate` = ?startDate, `Sector` = ?sector
+                WHERE `ID` = ?id";
+
+            var someId = "2";
+
+            var someEmail = "aEmail";
+
+            var someName = "aName";
+
+            var somePassword = "aPassword";
+
+            var someLastName = "aLastName";
+
+            var someStartDate = "2021-02-03";
+
+            var someSector = "aSector";
+
+            var anEmployee = new Employee()
+            {
+                ID = int.Parse(someId),
+                Username = someUsername,
+                Password = somePassword,
+                Email = someEmail,
+                Name = someName,
+                LastName = someLastName,
+                StartDate = DateTime.Parse(someStartDate),
+                Sector = someSector
+            };
+
+            var expectedParams = new Dictionary<string, object> {
+                {"?id", anEmployee.ID},
+                {"?username", anEmployee.Username},
+                {"?email",  anEmployee.Email},
+                {"?name",  anEmployee.Name},
+                {"?lastName",  anEmployee.LastName},
+                {"?startDate",  anEmployee.StartDate},
+                {"?sector", anEmployee.Sector},
+                {"?password", anEmployee.Password},
+            };
+
+            mySql.Setup(_ => _.ExecuteNonQuery(It.IsAny<string>(), It.IsAny<Dictionary<string, object>>())).Returns(0);
+
+            var employeeRepo = new EmployeeRepository(mySql.Object);
+
+            anEmployee.Invoking(emp => employeeRepo.UpdateEmployee(emp)).Should().Throw<Exception>();
+        }
     }
 }

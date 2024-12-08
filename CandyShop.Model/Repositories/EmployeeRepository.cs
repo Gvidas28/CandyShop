@@ -106,7 +106,7 @@ namespace CandyShop.Model.Repositories
             //should extract string interpolation result to variable, improves code readability, cognitive complexity
             var query = @$"
                 UPDATE `employees`
-                SET{(!string.IsNullOrWhiteSpace(employee.Password) ? "`Password` = ?password," : string.Empty)} `Username` = ?username, `Email` = ?email, `Name` = ?name, `LastName` = ?lastName, `StartDate` = ?startDate, `Sector` = ?sector
+                SET {(!string.IsNullOrWhiteSpace(employee.Password) ? "`Password` = ?password," : string.Empty)} `Username` = ?username, `Email` = ?email, `Name` = ?name, `LastName` = ?lastName, `StartDate` = ?startDate, `Sector` = ?sector
                 WHERE `ID` = ?id";
 
             //again DRY
@@ -124,15 +124,9 @@ namespace CandyShop.Model.Repositories
                 parameters.Add("?password", employee.Password);
 
             var result = mySql.ExecuteNonQuery(query, parameters);
-            System.Console.WriteLine("result: " + result);
-            String pararar = "";
-            foreach (var item in parameters)
-            {
-                pararar = pararar + " " + item.Key + " " + item.Value;
-            }
 
             if (result < 1)
-                throw new Exception("Failed to update employee!" + result + " " + query + " " + pararar);
+                throw new Exception("Failed to update employee!");
         }
 
         public void DeleteEmployee(int id)
