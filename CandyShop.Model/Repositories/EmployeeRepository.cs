@@ -2,10 +2,11 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CandyShop.Model.Repositories
 {
-    public class EmployeeRepository : IEmployeeRepository
+    public class EmployeeRepository(ISqlExecutor mySql) : IEmployeeRepository
     {
         public Employee GetEmployeeByUsername(string username)
         {
@@ -14,16 +15,8 @@ namespace CandyShop.Model.Repositories
                 FROM `employees`
                 WHERE `Username` = ?username";
 
-            //seems to be repeated everywhere,
-            var connection = new MySqlConnection(Constants.CONNECTION_STRING);
-            var command = new MySqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("?username", username);
-
-            connection.Open();
-
-            var result = command.ExecuteReader();
-            if (!result.Read())
+            var reader = mySql.GetReader(query, new Dictionary<string, object> { { "?username", username } });
+            if (!reader.Read())
                 return null;
 
             //employee construction from dbResult could be extracted all together
@@ -31,19 +24,19 @@ namespace CandyShop.Model.Repositories
             var employee = new Employee()
             {
                 //magic numbers: should use constants, or enum, like Employee.idColumn
-                ID = int.Parse(result.GetString(0)),
-                Username = result.GetString(1),
-                Password = result.GetString(2),
+                ID = int.Parse(reader.GetString(0)),
+                Username = reader.GetString(1),
+                Password = reader.GetString(2),
                 //checking null could be extracted, DRY
-                Email = !result.IsDBNull(3) ? result.GetString(3) : null,
-                Name = !result.IsDBNull(4) ? result.GetString(4) : null,
-                LastName = !result.IsDBNull(5) ? result.GetString(5) : null,
-                StartDate = !result.IsDBNull(6) ? DateTime.Parse(result.GetString(6)) : null,
-                Sector = result.GetString(7)
+                Email = !reader.IsDBNull(3) ? reader.GetString(3) : null,
+                Name = !reader.IsDBNull(4) ? reader.GetString(4) : null,
+                LastName = !reader.IsDBNull(5) ? reader.GetString(5) : null,
+                StartDate = !reader.IsDBNull(6) ? DateTime.Parse(reader.GetString(6)) : null,
+                Sector = reader.GetString(7)
             };
 
             //shouldn't we try catch finally to ensure connection is closed?
-            connection.Close();
+            reader.Close();
 
             return employee;
         }
@@ -113,31 +106,33 @@ namespace CandyShop.Model.Repositories
             //should extract string interpolation result to variable, improves code readability, cognitive complexity
             var query = @$"
                 UPDATE `employees`
-                SET {(!string.IsNullOrWhiteSpace(employee.Password) ? "`Password` = ?password," : string.Empty)} `Username` = ?username, `Email` = ?email, `Name` = ?name, `LastName` = ?lastName, `StartDate` = ?startDate, `Sector` = ?sector
+                SET{(!string.IsNullOrWhiteSpace(employee.Password) ? "`Password` = ?password," : string.Empty)} `Username` = ?username, `Email` = ?email, `Name` = ?name, `LastName` = ?lastName, `StartDate` = ?startDate, `Sector` = ?sector
                 WHERE `ID` = ?id";
 
             //again DRY
-            var connection = new MySqlConnection(Constants.CONNECTION_STRING);
-            var command = new MySqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("?id", employee.ID);
-            command.Parameters.AddWithValue("?username", employee.Username);
-            command.Parameters.AddWithValue("?email", string.IsNullOrWhiteSpace(employee.Email) ? (object)DBNull.Value : employee.Email);
-            command.Parameters.AddWithValue("?name", string.IsNullOrWhiteSpace(employee.Name) ? (object)DBNull.Value : employee.Name);
-            command.Parameters.AddWithValue("?lastName", string.IsNullOrWhiteSpace(employee.LastName) ? (object)DBNull.Value : employee.LastName);
-            command.Parameters.AddWithValue("?startDate", employee.StartDate is null ? (object)DBNull.Value : employee.StartDate);
-            command.Parameters.AddWithValue("?sector", employee.Sector);
+            var parameters = new Dictionary<string, object> {
+                {"?id", employee.ID},
+                {"?username", employee.Username},
+                {"?email", string.IsNullOrWhiteSpace(employee.Email) ? (object)DBNull.Value : employee.Email},
+                {"?name", string.IsNullOrWhiteSpace(employee.Name) ? (object)DBNull.Value : employee.Name},
+                {"?lastName", string.IsNullOrWhiteSpace(employee.LastName) ? (object)DBNull.Value : employee.LastName},
+                {"?startDate", employee.StartDate is null ? (object)DBNull.Value : employee.StartDate},
+                {"?sector", employee.Sector},
+            };
 
             if (!string.IsNullOrWhiteSpace(employee.Password))
-                command.Parameters.AddWithValue("?password", employee.Password);
+                parameters.Add("?password", employee.Password);
 
-            connection.Open();
+            var result = mySql.ExecuteNonQuery(query, parameters);
+            System.Console.WriteLine("result: " + result);
+            String pararar = "";
+            foreach (var item in parameters)
+            {
+                pararar = pararar + " " + item.Key + " " + item.Value;
+            }
 
-            var update = command.ExecuteNonQuery();
-            if (update < 1)
-                throw new Exception("Failed to update employee!");
-
-            connection.Close();
+            if (result < 1)
+                throw new Exception("Failed to update employee!" + result + " " + query + " " + pararar);
         }
 
         public void DeleteEmployee(int id)
