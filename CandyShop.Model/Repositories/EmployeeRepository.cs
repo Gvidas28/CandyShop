@@ -102,7 +102,7 @@ namespace CandyShop.Model.Repositories
 
             var query = @$"
                 UPDATE `employees`
-                SET ${maybePassword} `Username` = ?username, `Email` = ?email, `Name` = ?name, `LastName` = ?lastName, `StartDate` = ?startDate, `Sector` = ?sector
+                SET {maybePassword} `Username` = ?username, `Email` = ?email, `Name` = ?name, `LastName` = ?lastName, `StartDate` = ?startDate, `Sector` = ?sector
                 WHERE `ID` = ?id";
 
             var parameters = new Dictionary<string, object> {
@@ -121,7 +121,7 @@ namespace CandyShop.Model.Repositories
             var result = mySql.ExecuteNonQuery(query, parameters);
 
             if (result < 1)
-                throw new Exception("Failed to update employee!");
+                throw new Exception("Failed to update employee!" + query);
         }
 
         public void DeleteEmployee(int id)
