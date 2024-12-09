@@ -1,4 +1,5 @@
 ﻿using CandyShop.Model.Entities;
+using CandyShop.Model.Entities.Factories;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -16,24 +17,11 @@ namespace CandyShop.Model.Repositories
                 WHERE `Username` = ?username";
 
             var reader = mySql.GetReader(query, new Dictionary<string, object> { { "?username", username } });
+
             if (!reader.Read())
                 return null;
 
-            //employee construction from dbResult could be extracted all together
-            //single responsibility, modular, easier to test, decouple
-            var employee = new Employee()
-            {
-                //magic numbers: should use constants, or enum, like Employee.idColumn
-                ID = int.Parse(reader.GetString(0)),
-                Username = reader.GetString(1),
-                Password = reader.GetString(2),
-                //checking null could be extracted, DRY
-                Email = !reader.IsDBNull(3) ? reader.GetString(3) : null,
-                Name = !reader.IsDBNull(4) ? reader.GetString(4) : null,
-                LastName = !reader.IsDBNull(5) ? reader.GetString(5) : null,
-                StartDate = !reader.IsDBNull(6) ? DateTime.Parse(reader.GetString(6)) : null,
-                Sector = reader.GetString(7)
-            };
+            var employee = EmployeeMySqlFactory.Create(reader);
 
             //shouldn't we try catch finally to ensure connection is closed?
             reader.Close();
