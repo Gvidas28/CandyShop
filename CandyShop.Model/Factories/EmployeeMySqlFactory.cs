@@ -29,6 +29,7 @@ namespace CandyShop.Model.Entities.Factories
             {
                 return !reader.IsDBNull(column) ? DateTime.Parse(reader.GetString(column)) : null;
             }
+
             return new Employee()
             {
                 ID = int.Parse(reader.GetString(Columns.Id)),

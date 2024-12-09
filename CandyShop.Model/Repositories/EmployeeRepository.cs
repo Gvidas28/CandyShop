@@ -18,15 +18,22 @@ namespace CandyShop.Model.Repositories
 
             var reader = mySql.GetReader(query, new Dictionary<string, object> { { "?username", username } });
 
-            if (!reader.Read())
-                return null;
+            try
+            {
+                if (!reader.Read())
+                    return null;
 
-            var employee = EmployeeMySqlFactory.Create(reader);
+                var employee = EmployeeMySqlFactory.Create(reader);
 
-            //shouldn't we try catch finally to ensure connection is closed?
-            reader.Close();
+                reader.Close();
 
-            return employee;
+                return employee;
+            }
+            catch (Exception e)
+            {
+                reader.Close();
+                throw e;
+            }
         }
 
         public List<Employee> GetEmployeeList()
@@ -91,20 +98,20 @@ namespace CandyShop.Model.Repositories
 
         public void UpdateEmployee(Employee employee)
         {
-            //should extract string interpolation result to variable, improves code readability, cognitive complexity
+            var maybePassword = (!string.IsNullOrWhiteSpace(employee.Password) ? "`Password` = ?password," : string.Empty);
+
             var query = @$"
                 UPDATE `employees`
-                SET {(!string.IsNullOrWhiteSpace(employee.Password) ? "`Password` = ?password," : string.Empty)} `Username` = ?username, `Email` = ?email, `Name` = ?name, `LastName` = ?lastName, `StartDate` = ?startDate, `Sector` = ?sector
+                SET ${maybePassword} `Username` = ?username, `Email` = ?email, `Name` = ?name, `LastName` = ?lastName, `StartDate` = ?startDate, `Sector` = ?sector
                 WHERE `ID` = ?id";
 
-            //again DRY
             var parameters = new Dictionary<string, object> {
                 {"?id", employee.ID},
                 {"?username", employee.Username},
-                {"?email", string.IsNullOrWhiteSpace(employee.Email) ? (object)DBNull.Value : employee.Email},
-                {"?name", string.IsNullOrWhiteSpace(employee.Name) ? (object)DBNull.Value : employee.Name},
-                {"?lastName", string.IsNullOrWhiteSpace(employee.LastName) ? (object)DBNull.Value : employee.LastName},
-                {"?startDate", employee.StartDate is null ? (object)DBNull.Value : employee.StartDate},
+                {"?email", valueOrDbNull(employee.Email) },
+                {"?name", valueOrDbNull(employee.Name)},
+                {"?lastName", valueOrDbNull(employee.LastName)},
+                {"?startDate", valueOrDbNull(employee.StartDate)},
                 {"?sector", employee.Sector},
             };
 
@@ -135,6 +142,17 @@ namespace CandyShop.Model.Repositories
                 throw new Exception("Failed to delete employee!");
 
             connection.Close();
+        }
+
+        private object valueOrDbNull(object value)
+        {
+            return value switch
+            {
+                string str => string.IsNullOrWhiteSpace(str) ? (object)DBNull.Value : str,
+                DateTime date => date,
+                null => (object)DBNull.Value
+            };
+
         }
     }
 }
